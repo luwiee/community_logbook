@@ -1,0 +1,187 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>front-end</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli">
+    <link rel="stylesheet" href="{% static 'assets/fonts/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/fonts/ionicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/Bootstrap-DataTables.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/Footer-Clean.css' %}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/LinkedIn-like-Profile-Box.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/Login-Form-Dark.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/Navigation-Clean.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+    <script src="{% static 'assets/js/html5-qrcode.min.js' %}"></script>
+</head>
+
+<body>
+<nav class="navbar navbar-light navbar-expand-lg navigation-clean navigation-logged-in">
+    <div class="container"><a class="navbar-brand" href="#">Camella Heights</a>
+        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
+                class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navcol-1">
+            <ul class="navbar-nav ml-auto">
+                {% if not user.is_staff %}
+                    <li class="nav-item"><a class="nav-link " href="{% url 'index' %}">Profile</a></li>
+                {% endif %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'logs' %}">Logs</a></li>
+                {% if not user.is_staff %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'qr_gen' %} ">QR</a></li>
+                {% endif %}
+                <li class="nav-item"><a class="nav-link active" href="#">Scanner</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container" id="qr-container">
+    <section class="mt-4">
+        <div class="container-fluid" id="data-container">
+            <div class="row">
+                <div class="col">
+                    <div class="card shadow">
+                        <div class="card-header py-2">
+                            <p class="lead text-info m-0"><strong>Detected Record</strong></p>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive table mb-0 pt-3 pr-2">
+                                <table class="table table-striped table-sm my-0 mydatatable">
+                                    <thead>
+                                    <tr>
+                                        <th>Log ID</th>
+                                        <th>Type</th>
+                                        <th>Name</th>
+                                        <th>Destination</th>
+                                        <th>Timestamp</th>
+                                        <th>Logged By</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td id="record_id"></td>
+                                        <td id="record_type"></td>
+                                        <td id="record_name"></td>
+                                        <td id="record_destination"></td>
+                                        <td id="record_timestamp"></td>
+                                        <td id="record_staff"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="button-row">
+                        <button class="btn btn-primary btn-sm" type="submit">LOG</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="card shadow mb-3" id="qr-card">
+        <div class="card-header py-3">
+            <p class="text-primary m-0 font-weight-bold">Scanned QR</p>
+        </div>
+        <div class="card-body">
+            <form>
+                <div class="form-row">
+                    <div class="col">
+                        <div style="width:100%;" id="reader"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+<script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
+<script src="{% static 'assets/js/Bootstrap-DataTables.js' %}"></script>
+<script src="{% static 'assets/js/DataTable---Fully-BSS-Editable.js' %}"></script>
+<script>
+    const csrf = new DOMParser().parseFromString('{% csrf_token %}', "text/html");
+    const csrf_token = csrf.querySelector('[name=csrfmiddlewaretoken]').value;
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                // Only send the token to relative URLs i.e. locally.
+                xhr.setRequestHeader("X-CSRFToken", csrf_token);
+            }
+        }
+    });
+
+    function submit_log_id(id) {
+        const data = {
+            id: id,
+        }
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": "{% url 'accept_log_entry' %}",
+            "data": data,
+            "beforeSend": function (xhr, settings) {
+                $.ajaxSettings.beforeSend(xhr, settings);
+            },
+            "success": function (result) {
+                $("#record_id").text(result.id);
+                $("#record_type").text(result.type);
+                $("#record_name").text(result.name);
+                $("#record_destination").text(result.destination);
+                $("#record_timestamp").text(result.timestamp);
+                $("#record_staff").text(result.staff);
+            }
+        })
+    }
+
+</script>
+<script type="text/javascript">
+    var html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader", {fps: 5, qrbox: 500});
+    html5QrcodeScanner.render(onScanSuccess, onScanError);
+
+    function onScanSuccess(qrCodeMessage) {
+        submit_log_id(qrCodeMessage);
+        html5QrcodeScanner.stop().then((ignore) => {
+            // QR Code scanning is stopped.
+        }).catch((err) => {
+            // Stop failed, handle it.
+        });
+    }
+
+    function submitInputCode() {
+        onScanSuccess($("#manual_input_code").val());
+    }
+
+    function onScanError(errorMessage) {
+        //handle scan error
+    }
+
+
+</script>
+</body>
+
+</html>

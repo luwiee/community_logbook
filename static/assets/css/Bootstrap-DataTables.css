@@ -1,0 +1,29 @@
+.bootstrap_datatables {
+  min-height: 100vh;
+}
+
+#data-container {
+  max-width: 1000px;
+}
+
+#qr-container {
+  max-width: 1000px;
+}
+
+.fa.fa-qrcode {
+  font-size: 350px;
+  /*align-self: initial;*/
+}
+
+.form-group {
+  align-items: center;
+}
+
+#qr-card {
+  text-align: center;
+}
+
+.card-header {
+  text-align: left;
+}
+

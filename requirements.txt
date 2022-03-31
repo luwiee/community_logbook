@@ -1,0 +1,5 @@
+Django
+pip
+django-qr-code
+psycopg2
+gunicorn

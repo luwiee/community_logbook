@@ -1,0 +1,56 @@
+#home-header {
+  background: linear-gradient( rgba(0, 0, 0, 0.20), rgba(0, 0, 0, 0.5) ),url("../../assets/img/jumbo-bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 20px;
+  text-align: center;
+  padding-bottom: 20px;
+  margin: 0 auto;
+}
+
+#home-header .jumbotron {
+  margin: 40px;
+  max-width: 800px;
+  text-align: center;
+}
+
+@media (min-width: 992px) {
+  #home-header .jumbotron {
+    margin: 30px auto;
+  }
+}
+
+#form-dialogue {
+  background: rgba(255, 255, 255, 0.80);
+  border-radius: 20px;
+}
+
+@media (min-width: 768px) {
+  #login-dark form {
+  }
+}
+
+.container {
+  /*max-width: 200px;*/
+}
+
+@media (min-width: 992px) {
+  .mb-3 {
+    min-width: 900px;
+  }
+}
+
+p {
+  font-family: sans-serif;
+}
+
+.text-info {
+  color: #4582ec!important;
+  /*font-style: bold! important;*/
+}
+
+#button-row {
+  margin-top: 25px;
+  text-align: center;
+}
+
